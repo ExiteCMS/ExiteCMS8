@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+	RewriteBase /exitecms8/public
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d [OR]
+	RewriteCond $1 ^$
+
+	RewriteRule ^(.*)$ /exitecms8/public/index.php/$1 [L]
+
+</IfModule>

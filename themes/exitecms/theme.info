@@ -1,0 +1,182 @@
+<?php
+
+return array(
+	/*
+	 * system theme's can not be deactivated or removed by the user
+	 */
+	'system' => true,
+
+	/*
+	 * theme information
+	 */
+	'details' => array(
+
+		/*
+		 * short description of this theme
+		 */
+		'description' => 'default theme',
+
+		/*
+		 * if included, a thumbnail of a screenshot of the theme
+		 * specify the name of the image, without a path. it should
+		 * be placed in the theme's img asset folder.
+		 */
+		'productPicture' => '',
+
+		/*
+		 * theme creation date, something that can be parsed by strtotime()
+		 */
+		'creationDate' => '20111226',
+
+		/*
+		 * This theme's version number. Format is float
+		 */
+		'version' => 1.0,
+
+		/*
+		 * This theme's author's name
+		 */
+		'author' => 'WanWizard',
+
+		/*
+		 * This theme's author's email address
+		 */
+		'author_email' => 'wanwizard@wanwizard.eu',
+
+		/*
+		 * This theme's author's website
+		 */
+		'author_url' => 'http://wanwizard.eu',
+
+		/*
+		 * This theme's product website
+		 */
+		'product_url' => 'http://www.exitecms.org/themes',
+
+		/*
+		 * Url where updates for this theme can be found
+		 */
+		'update_url' => 'http://www.exitecms.org/updates',
+
+		/*
+		 * Url where to get support for this theme
+		 */
+		'support_url' => 'http://www.exitecms.org/trac8',
+
+		/*
+		 * This theme's copyright information
+		 */
+		'copyright' => '(c) 2011 www.exitecms.org',
+
+		/*
+		 * This theme's license
+		 */
+		'license' => 'cc by-nc-sa',
+
+		/*
+		 * This theme's license text
+		 */
+		'license_url' => 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
+
+		/*
+		 * This theme's license description or deviation of the specified license
+		 */
+		'license_text' => 'Please contact the author if you require a different licence',
+
+		/*
+		 * Credits
+		 */
+		'credits' => 'This theme is based on the RedEvo FlexiNews theme by Red Evolution (info@redevolution.com). Originally designed for Joomla, it is modified for use by ExiteCMS by Rollsroyce'
+	),
+
+	/*
+	 * page templates this theme defines
+	 */
+	'templates' => array(
+
+		/*
+		 * default template
+		 */
+		'default' => array(
+
+			/*
+			 * template description
+			 */
+			'description' => 'Default template. Tableless, fast, and with a fluid 2-column layout. Available in 5 basic colours',
+
+			/*
+			 * configurable options for this template, fields are fieldset::add() compatible
+			 */
+			'options' => array(
+				/*
+				 * color for this template
+				 */
+				'color' => array(
+					'label' => 'Template color',
+					'attributes' => array('type' => 'select', 'options' => array('blue' => 'Blue', 'r' => 'Red', 'green' => 'Green', 'purple' => 'Purple', 'orange' => 'Orange')),
+					'rules' => array('required'),
+					'default' => 'blue',
+				),
+			),
+
+			/*
+			 * default global properties for this template
+			 *
+			 * these are also available for every widget, unless overwritten
+			 */
+			'properties' => array(
+				/*
+				 * default chrome for this template
+				 */
+				'chrome' => array(
+					/*
+					 * default section chrome
+					 */
+					'section' => null, //'section',
+
+					/*
+					 * default widget chrome
+					 */
+					'widget' => null, //'widget',
+				),
+			),
+
+			/*
+			 * widget sections defined by this theme template
+			 */
+			'sections' => array(
+				'header-nav' => array(
+					'description' => 'Header navigation',
+					'max' => 1,
+					'chrome' => array(
+						'section' => null,
+						'widget' => null,
+					),
+				),
+				'header' => array(
+					'description' => 'Page header',
+				),
+				'main-nav' => array(
+					'description' => 'Main menu navigation',
+					'max' => 1,
+					'chrome' => array(
+						'section' => null,
+						'widget' => null,
+					),
+				),
+				'messages' => array(
+					'description' => 'Messages area',
+				),
+				'body' => array(
+					'description' => 'Page body area',
+				),
+				'content' => array(
+					'description' => 'Page content area',
+				),
+				'footer' => array(
+					'description' => 'Page footer',
+				),
+			),
+		),
+	),
+);
