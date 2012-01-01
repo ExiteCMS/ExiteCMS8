@@ -33,4 +33,3 @@ class Controller_Phpinfo extends \Controller {
 		return \ViewModel::forge('phpinfo');
 	}
 }
-/* End of file phpinfo.php */

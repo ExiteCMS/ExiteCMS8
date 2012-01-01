@@ -39,20 +39,41 @@ class Controller_Test extends Controller
 	 * @access  public
 	 * @return  Response
 	 */
-	public function module()
+	public function phpinfo()
 	{
 		// load a theme instance;
 		Theme::instance();
 
 		// fetch the phpinfo data and add the content
-		$phpinfo = \Request::forge('phpinfo/phpinfo/index', false)->execute()->response->body();
-		Theme::instance()->add_widget('content', $phpinfo);
+		$content = \Request::forge('phpinfo/phpinfo/index', false)->execute()->response->body();
+		Theme::instance()->add_widget('content', $content);
 
 		// return the loaded theme template
 		return \Response::forge(
 			Theme::instance()
 			->view('templates/default')
-			->set('title', 'widget loading test')
+			->set('title', 'phpinfo module test')
+		);
+	}
+
+	/**
+	 * @access  public
+	 * @return  Response
+	 */
+	public function dashboard()
+	{
+		// load a theme instance;
+		Theme::instance();
+
+		// fetch the phpinfo data and add the content
+		$content = \Request::forge('exitecms/dashboard/index', false)->execute()->response->body();
+		Theme::instance()->add_widget('content', $content);
+
+		// return the loaded theme template
+		return \Response::forge(
+			Theme::instance()
+			->view('templates/default')
+			->set('title', 'dashboard module test')
 		);
 	}
 }
