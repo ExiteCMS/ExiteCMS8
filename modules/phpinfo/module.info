@@ -1,0 +1,127 @@
+<?php
+/**
+ * ExiteCMS
+ *
+ * ExiteCMS is a fast and lightweight web application framework.
+ *
+ * @package		ExiteCMS
+ * @version		8.0
+ * @author		ExiteCMS Development Team
+ * @license		Open Software License v. 3.0
+ * @copyright	2011-2012 ExiteCMS Development Team
+ * @link		http://www.exitecms.org
+ */
+
+return array(
+
+	/*
+	 * system modules can not be deactivated or removed by the user
+	 */
+	'system' => false,
+
+	/*
+	 * general module information
+	 */
+	'details' => array(
+
+		/*
+		 * short description of this module
+		 */
+		'description' => 'ExiteCMS PHPInfo widget',
+
+		/*
+		 * if included, a thumbnail of a screenshot of the theme
+		 * specify the name of the image, without a path. it should
+		 * be placed in the modules img asset folder.
+		 */
+		'screenshot' => '',
+
+		/*
+		 * theme creation date, format YYYYMMDD
+		 */
+		'created' => '20120101',
+
+		/*
+		 * ExiteCMS version number this module is for. Format is float
+		 */
+		'version' => 8.0,
+
+		/*
+		 * This modules revision number. This is used to detect newer versions
+		 */
+		'revision' => 0,
+
+		/*
+		 * This modules author's name
+		 */
+		'author' => 'WanWizard',
+
+		/*
+		 * This modules author's email address
+		 */
+		'author_email' => 'wanwizard@exitecms.org',
+
+		/*
+		 * This modules author's website
+		 */
+		'author_url' => 'http://www.exitecms.org',
+
+		/*
+		 * This modules product website
+		 */
+		'product_url' => 'http://www.exitecms.org',
+
+		/*
+		 * Url where updates for this theme can be found
+		 */
+		'update_url' => 'http://www.exitecms.org/updates',
+
+		/*
+		 * Url where to get support for this theme
+		 */
+		'support_url' => 'http://www.exitecms.org/trac8',
+
+		/*
+		 * This modules copyright information
+		 */
+		'copyright' => '(c) 2011-2012 www.exitecms.org',
+
+		/*
+		 * This modules license
+		 */
+		'license' => 'OSL 3.0',
+
+		/*
+		 * This modules license description or deviation of the specified license
+		 */
+		'license_url' => 'http://www.opensource.org/licenses/OSL-3.0',
+
+		/*
+		 * This modules license description or deviation of the specified license
+		 */
+		'license_text' => 'Please contact the author if you require a different licence',
+
+		/*
+		 * Credits
+		 */
+		'credits' => ''
+	),
+
+	/*
+	 * definition of the available widgets for this module
+	 */
+	'widgets' => array(
+
+		'phpinfo' => array(
+			'uri' => 'phpinfo/phpinfo/index',
+			'description' => 'PHP Info widget'
+		),
+	),
+
+	/*
+	 * definition of the available plugins for this module
+	 */
+	'plugins' => array(
+	),
+
+);
