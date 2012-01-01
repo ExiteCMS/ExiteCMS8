@@ -1,14 +1,19 @@
 <?php
 
 /**
- * The Test Controller.
+ * ExiteCMS
  *
- * @package  app
- * @extends  Controller
+ * ExiteCMS is a fast and lightweight web application framework.
+ *
+ * @package		ExiteCMS
+ * @version		8.0
+ * @author		ExiteCMS Development Team
+ * @license		Open Software License v. 3.0
+ * @copyright	2011-2012 ExiteCMS Development Team
+ * @link		http://www.exitecms.org
  */
 class Controller_Test extends Controller
 {
-
 	/**
 	 * @access  public
 	 * @return  Response
@@ -26,10 +31,28 @@ class Controller_Test extends Controller
 		return \Response::forge(
 			Theme::instance()
 			->view('templates/default')
-			->set('title', 'This is the page title')
-			->set('version', 8.0)
-			->set('revision', 0)
-			->set('build', 218)
+			->set('title', 'template rendering tests')
+		);
+	}
+
+	/**
+	 * @access  public
+	 * @return  Response
+	 */
+	public function module()
+	{
+		// load a theme instance;
+		Theme::instance();
+
+		// fetch the phpinfo data and add the content
+		$phpinfo = \Request::forge('phpinfo/phpinfo/index', false)->execute()->response->body();
+		Theme::instance()->add_widget('content', $phpinfo);
+
+		// return the loaded theme template
+		return \Response::forge(
+			Theme::instance()
+			->view('templates/default')
+			->set('title', 'widget loading test')
 		);
 	}
 }

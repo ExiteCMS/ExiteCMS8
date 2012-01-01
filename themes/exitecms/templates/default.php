@@ -65,7 +65,7 @@
 					?>
 					<div style="float:left;">
 						&copy; 2011<?php if (date("Y") > 2011) echo '-',date("Y"); ?> <a href="http://www.exitecms.org">ExiteCMS</a>
-						<?php echo sprintf('v%s.%s build %s',$version, $revision, $build); ?>
+						<?php echo sprintf('v%s revision %s',\Config::get('exitecms.version'), \Config::get('exitecms.revision')); ?>
 					</div>
 					<div style="float:right;">
 						ExiteCMS is powered by <a href="http://fuelphp.com">FuelPHP</a> v<?php echo Fuel::VERSION; ?>

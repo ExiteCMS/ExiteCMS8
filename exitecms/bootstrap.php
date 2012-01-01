@@ -8,22 +8,14 @@ class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
 require COREPATH.'bootstrap.php';
 
 
+// Add classes you want to override here
 Autoloader::add_classes(array(
-	// Add classes you want to override here
 	'Theme' => APPPATH.'classes/theme.php',
 ));
 
 // Register the autoloader
 Autoloader::register();
 
-/**
- * Your environment.  Can be set to any of the following:
- *
- * Fuel::DEVELOPMENT
- * Fuel::TEST
- * Fuel::STAGE
- * Fuel::PRODUCTION
- */
 Fuel::$env = (isset($_SERVER['FUEL_ENV']) ? $_SERVER['FUEL_ENV'] : Fuel::DEVELOPMENT);
 
 // Initialize the framework with the config file.

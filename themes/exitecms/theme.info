@@ -21,17 +21,22 @@ return array(
 		 * specify the name of the image, without a path. it should
 		 * be placed in the theme's img asset folder.
 		 */
-		'productPicture' => '',
+		'screenshot' => '',
 
 		/*
 		 * theme creation date, something that can be parsed by strtotime()
 		 */
-		'creationDate' => '20111226',
+		'created' => '20111226',
 
 		/*
 		 * This theme's version number. Format is float
 		 */
-		'version' => 1.0,
+		'version' => 8.0,
+
+		/*
+		 * This theme's revision number. This is used to detect newer versions
+		 */
+		'revision' => 0,
 
 		/*
 		 * This theme's author's name
@@ -66,17 +71,17 @@ return array(
 		/*
 		 * This theme's copyright information
 		 */
-		'copyright' => '(c) 2011 www.exitecms.org',
+		'copyright' => '(c) 2011-2012 www.exitecms.org',
 
 		/*
 		 * This theme's license
 		 */
-		'license' => 'cc by-nc-sa',
+		'license' => 'OSL 3.0',
 
 		/*
 		 * This theme's license text
 		 */
-		'license_url' => 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
+		'license_url' => 'http://www.opensource.org/licenses/OSL-3.0',
 
 		/*
 		 * This theme's license description or deviation of the specified license
@@ -86,7 +91,7 @@ return array(
 		/*
 		 * Credits
 		 */
-		'credits' => 'This theme is based on the RedEvo FlexiNews theme by Red Evolution (info@redevolution.com). Originally designed for Joomla, it is modified for use by ExiteCMS by Rollsroyce'
+		'credits' => ''
 	),
 
 	/*

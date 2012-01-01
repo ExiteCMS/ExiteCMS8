@@ -1,15 +1,15 @@
 <?php
 /**
- * Fuel
+ * ExiteCMS
  *
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * ExiteCMS is a fast and lightweight web application framework.
  *
- * @package    Theme
- * @version    1.0
- * @author     WanWizard
- * @license    MIT License
- * @copyright  2011 WanWizard Web Development
- * @link       http://wanwizard.eu
+ * @package		ExiteCMS
+ * @version		8.0
+ * @author		ExiteCMS Development Team
+ * @license		Open Software License v. 3.0
+ * @copyright	2011-2012 ExiteCMS Development Team
+ * @link		http://www.exitecms.org
  */
 
 class Theme extends \Fuel\Core\Theme
