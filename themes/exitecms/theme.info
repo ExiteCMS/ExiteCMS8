@@ -153,10 +153,6 @@ return array(
 				'header-nav' => array(
 					'description' => 'Header navigation',
 					'max' => 1,
-					'chrome' => array(
-						'section' => null,
-						'widget' => null,
-					),
 				),
 				'header' => array(
 					'description' => 'Page header',
@@ -164,10 +160,6 @@ return array(
 				'main-nav' => array(
 					'description' => 'Main menu navigation',
 					'max' => 1,
-					'chrome' => array(
-						'section' => null,
-						'widget' => null,
-					),
 				),
 				'messages' => array(
 					'description' => 'Messages area',
@@ -177,6 +169,10 @@ return array(
 				),
 				'content' => array(
 					'description' => 'Page content area',
+					'chrome' => array(
+						'section' => 'section',
+						'widget' => 'widget',
+					),
 				),
 				'footer' => array(
 					'description' => 'Page footer',

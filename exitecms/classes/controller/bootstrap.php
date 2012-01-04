@@ -24,6 +24,9 @@ class Controller_Bootstrap extends Controller
 
 		// load the exitecms configuration
 		\Config::load('exitecms', true);
+
+		// global language files
+		\Lang::load('global');
 	}
 
 	/**
@@ -32,19 +35,50 @@ class Controller_Bootstrap extends Controller
 	 */
 	public function router()
 	{
+		// start the session
+		$session = \Session::forge();
+
+		// get the current flash_id and set it to exitecms
+		$fk = $session->get_flash_id();
+		$session->set_flash_id('exitecms');
+
+		// do we have any messages in flash?
+		$messages = $session->get_flash('messages');
+
+		// if there were any stored, add them to the messages array
+		if ( is_array($messages) )
+		{
+			// restore the messages
+			foreach($messages as $message)
+			{
+				\ExiteCMS\Core\Messages::set($message['message'], $message['type']);
+			}
+		}
+
+		// restore the original flash_id
+		$session->set_flash_id($fk);
+
+		//
+		// TEST CODE BELOW !
+		//
+
 		// get the first URI segment
-		$segments = Uri::segments();
-		isset($segments[0]) or $segments[0] = null;
+		$segments = \Uri::segments();
+		$controller = array_shift($segments);
+
+		\ExiteCMS\Core\Util::set_baseurl($controller);
+
+		\ExiteCMS\Core\Util::set_segments($segments);
 
 		// for now, call our test controller so we can test core functionality
-		$test = new Controller_Test($this->request, $this->response);
-		if (method_exists($test, $segments[0]))
+		$test = new \Controller_Test($this->request, $this->response);
+		if (method_exists($test, $controller))
 		{
-			return $test->{$segments[0]}();
+			return $test->{$controller}();
 		}
 		else
 		{
-			throw new HttpNotFoundException('No test method requested or method not found');
+			throw new \ExiteCMS\Core\Exception('No test method requested or method not found');
 		}
 	}
 }

@@ -133,7 +133,7 @@ body {
 #body {
 	overflow: hidden;
 	margin:0 auto;
-	padding-bottom:10px;
+	padding:10px 0px;
 	width: 960px;
 	min-height: 500px;
 }

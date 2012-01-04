@@ -47,37 +47,20 @@ class Theme extends \Fuel\Core\Theme
 	 */
 	public function __construct(array $config = array())
 	{
+		// we like to merge the config, unlike the FuelPHP class
 		\Config::load('theme', true, false, true);
 		$config = array_merge(\Config::get('theme', false), $config);
 
 		// we require the theme info file. always.
 		$config['require_info_file'] = true;
 
-		parent::__construct($config);
-
 		// make sure we've got the parser loaded if view files are not html or php
 		if ($this->config['view_ext'] != '.html' and $this->config['view_ext'] != '.php')
 		{
 			\Package::load('parser');
 		}
-	}
 
-	/**
-	 * Loads a view from the currently loaded theme.
-	 *
-	 * @param   string  $view         View name
-	 * @param   array   $data         View data
-	 * @param   bool    $auto_filter  Auto filter the view data
-	 * @return  View    New View object
-	 */
-	public function view($view, $data = array(), $auto_filter = null)
-	{
-		$view = parent::view($view, $data, $auto_filter);
-
-		// give the theme template access to the theme object
-		$view->set('theme', $this, false);
-
-		return $view;
+		parent::__construct($config);
 	}
 
 	/**
@@ -128,8 +111,7 @@ class Theme extends \Fuel\Core\Theme
 
 			foreach (array_keys($sections) as $section)
 			{
-
-				isset($this->sections[$section]) or $this->sections[$section] = array();
+				isset($this->sections[$section]) or $this->sections[$section] = array('data' => array(), 'widgets' => array());
 			}
 			foreach (array_keys($this->sections) as $section)
 			{
@@ -139,7 +121,7 @@ class Theme extends \Fuel\Core\Theme
 				}
 			}
 
-			$this->active['asset'] = \Asset::instance('theme_active')->add_path(DOCROOT.'themes/'.$this->active['name']);
+			$this->active['asset'] = \Asset::forge('theme_active')->add_path(DOCROOT.'themes/'.$this->active['name']);
 		}
 
 		return $this->active;
@@ -165,9 +147,9 @@ class Theme extends \Fuel\Core\Theme
 
 			foreach (array_keys($sections) as $section)
 			{
-
 				isset($this->sections[$section]) or $this->sections[$section] = array();
 			}
+
 			foreach (array_keys($this->sections) as $section)
 			{
 				if ( ! isset($sections[$section]))
@@ -176,7 +158,7 @@ class Theme extends \Fuel\Core\Theme
 				}
 			}
 
-			$this->fallback['asset'] = \Asset::instance('theme_fallback')->add_path(DOCROOT.'themes/'.$this->fallback['name']);
+			$this->fallback['asset'] = \Asset::forge('theme_fallback')->add_path(DOCROOT.'themes/'.$this->fallback['name']);
 		}
 
 		return $this->fallback;
@@ -207,6 +189,21 @@ class Theme extends \Fuel\Core\Theme
 	}
 
 	/**
+	 * Add data to a section
+	 *
+	 * @param   string  $section  name of the section to which the data should be added
+	 * @param   array   $data     data to be added
+	 * @return  void
+	 */
+	public function section($section, Array $data = array())
+	{
+		if (isset($this->sections[$section]))
+		{
+			$this->sections[$section]['data'] = array_merge($this->sections[$section]['data'], $data);
+		}
+	}
+
+	/**
 	 * Returns the whole or part of the sections array
 	 *
 	 * @param   string  $section  name of the section to return, or null for all sections
@@ -225,6 +222,23 @@ class Theme extends \Fuel\Core\Theme
 	}
 
 	/**
+	 * Add the content of a widget to a section
+	 *
+	 * @param   string  $section  name of the section to which the content should be added
+	 * @param   mixed   $content  the actual content. can be a string, View, Viewmodel or array
+	 *                            if array, it must contain 'widget' and 'data', and $data is ignored
+	 * @param   array   $data     data to be added to the content in case of a View or Viewmodel
+	 * @return  void
+	 */
+	public function widget($section, $content, Array $data = array())
+	{
+		if (isset($this->sections[$section]))
+		{
+			$this->sections[$section]['widgets'][] = is_array($content) ? $content : array('widget' => $content, 'data' => $data);
+		}
+	}
+
+	/**
 	 * Returns the stored content of a widget section
 	 *
 	 * If defined, widget and section chrome templates will be applied
@@ -234,27 +248,27 @@ class Theme extends \Fuel\Core\Theme
 	 */
 	public function widgets($section, $error = true)
 	{
-		$output = '';
-
 		if (isset($this->sections[$section]))
 		{
 			$info = $this->info('templates.default.sections.'.$section);
 
-			foreach ($this->sections[$section] as $data)
+			$output = '';
+			foreach ($this->sections[$section]['widgets'] as &$data)
 			{
-				if ( ! empty($info['chrome']['widget']))
+				if (empty($info['chrome']['widget']))
 				{
-					$output .= \View::forge($this->find_file('chrome'.DS.$info['chrome']['widget']), $data, false)->render();
+					$output .= (string) $data['widget'];
 				}
 				else
 				{
-					$output .= (string) $data['_content_'];
+					$output .= \View::forge($this->find_file('chrome'.DS.$info['chrome']['widget']), $data, false)->render();
 				}
 			}
 
 			if ( ! empty($info['chrome']['section']))
 			{
-				$output = \View::forge($this->find_file('chrome'.DS.$info['chrome']['section']), array('_content_' => $output), false)->render();
+				$this->sections[$section]['widgets'] =& $output;
+				$output = \View::forge($this->find_file('chrome'.DS.$info['chrome']['section']), $this->sections[$section], false)->render();
 			}
 		}
 		else
@@ -269,22 +283,6 @@ class Theme extends \Fuel\Core\Theme
 	}
 
 	/**
-	 * Add the content of a widget to a section
-	 *
-	 * @param   string  $section  name of the section to which the content should be added
-	 * @param   mixed  $content  the actual content. can be a string, View or Viewmodel
-	 * @param   array  $data     data to be added to the content in case of a View or Viewmodel
-	 * @return  void
-	 */
-	public function add_widget($section, $content, Array $data = array())
-	{
-		if (isset($this->sections[$section]))
-		{
-			$this->sections[$section][] = array('_content_' => $content, 'data' => $data);
-		}
-	}
-
-	/**
 	 * Checks if an section has widgets, and return the count
 	 *
 	 * @param   string  $section  name of the section to which the content should be added
@@ -292,7 +290,7 @@ class Theme extends \Fuel\Core\Theme
 	 */
 	public function has_widgets($section = '')
 	{
-		return (isset($this->sections[$section])) ? count($this->sections[$section]) : false;
+		return (isset($this->sections[$section]['widgets'])) ? count($this->sections[$section]['widgets']) : false;
 	}
 
 	/**
@@ -312,7 +310,7 @@ class Theme extends \Fuel\Core\Theme
 
 		foreach ($sections as $section)
 		{
-			isset($this->sections[$section]) and $count += count($this->sections[$section]);
+			isset($this->sections[$section]['widgets']) and $count += count($this->sections[$section]['widgets']);
 		}
 
 		return $count;

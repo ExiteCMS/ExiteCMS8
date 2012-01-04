@@ -43,7 +43,7 @@ return array(
 	 */
 	'index_file'  => false,
 
-	'profiling'  => Fuel::$env == 'development' ? true : false,
+	'profiling'  => false, //Fuel::$env == 'development' ? true : false,
 
 	/**
 	 * Settings for Cache class
@@ -55,7 +55,7 @@ return array(
 	/**
 	 * Callback to use with ob_start(), set this to 'ob_gzhandler' for gzip encoding of output
 	 */
-	'ob_callback'  => null,
+	'ob_callback'  => Fuel::$env == 'development' ? null : 'ob_gzhandler',
 
 	'errors'  => array(
 		// Which errors should we show, but continue execution?
@@ -185,7 +185,7 @@ return array(
 		 * );
 		 */
 		'packages'  => array(
-			//'orm',
+			'orm',
 		),
 
 		/**

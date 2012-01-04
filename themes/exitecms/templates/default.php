@@ -37,12 +37,10 @@
 			</div>
 			<div id="body">
 				<div id="wrapper">
-					<?php if ( $theme->has_widgets('messages') ) { ?>
-						<?php if ( $output = $theme->widgets('messages') ) { ?>
+					<?php if ( $theme->has_widgets('messages') and $output = $theme->widgets('messages') ) { ?>
 						<div id="messages">
 							<?php echo $output; ?>
 						</div>
-						<?php } ?>
 					<?php } ?>
 					<?php echo $theme->widgets('body'); ?>
 					<div id="content">

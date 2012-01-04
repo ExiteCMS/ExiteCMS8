@@ -1,12 +1,22 @@
 <IfModule mod_rewrite.c>
-    RewriteEngine on
+    RewriteEngine On
 
-	RewriteBase /exitecms8/public
+    RewriteBase /public
 
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d [OR]
-	RewriteCond $1 ^$
+    RewriteRule ^(/)?$ index.php/$1 [L]
 
-	RewriteRule ^(.*)$ /exitecms8/public/index.php/$1 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteRule ^(.*)$ index.php?/$1 [L]
+
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # If we don't have mod_rewrite installed, all 404's
+    # can be sent to index.php, and everything works as normal.
+    # Submitted by: ElliotHaughin
+
+    ErrorDocument 404 /public/index.php
 
 </IfModule>

@@ -15,4 +15,5 @@ nbproject/
 /cache/*/*
 /exitecms/config/crypt.php
 /exitecms/config/development/db.php
+/exitecms/config/production/db.php
 /public/themes/*
