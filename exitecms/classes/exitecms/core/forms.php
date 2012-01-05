@@ -56,6 +56,11 @@ class Forms extends \Controller
 	protected $paginate = false;
 
 	/**
+	 * @var	array	Defined form observers
+	 */
+	protected $observers = array();
+
+	/**
 	 * Forms constructor
 	 *
 	 * @access	public
@@ -198,7 +203,7 @@ class Forms extends \Controller
 		}
 		else
 		{
-			return null;
+			return false;
 		}
 	}
 
@@ -280,12 +285,15 @@ class Forms extends \Controller
 			// populate the model from the post information
 			$this->model->populate();
 
-			// save the updated record
+			$this->observe('before_save');
+
+			// check if anything was changed
 			if ($this->is_changed())
 			{
-				// save the updated record
 				try
 				{
+					$this->observe('before_insert');
+
 					if ($this->model->save())
 					{
 						\ExiteCMS\Core\Messages::set(\Lang::get('action.add.success'), 'C');
@@ -294,6 +302,11 @@ class Forms extends \Controller
 					{
 						\ExiteCMS\Core\Messages::set(\Lang::get('action.add.failure'), 'E');
 					}
+				}
+				catch (\ExiteCMS\Core\FormObserverFailed $e)
+				{
+					\Debug::dump('FORM OBSERVER FAILED!', $e->getMessage());
+					die();
 				}
 				catch (\Orm\ValidationFailed $e)
 				{
@@ -325,12 +338,16 @@ class Forms extends \Controller
 				// populate the model from the post information
 				$this->model->populate();
 
-				// save the updated record
+				$this->observe('before_save');
+
+				// check if anything was changed
 				if ($this->is_changed())
 				{
 					// save the updated record
 					try
 					{
+						$this->observe('before_update');
+
 						if ($this->model->save())
 						{
 							\ExiteCMS\Core\Messages::set(\Lang::get('action.edit.success'), 'C');
@@ -339,6 +356,11 @@ class Forms extends \Controller
 						{
 							\ExiteCMS\Core\Messages::set(\Lang::get('action.edit.failure'), 'E');
 						}
+					}
+					catch (\ExiteCMS\Core\FormObserverFailed $e)
+					{
+						\Debug::dump('FORM OBSERVER FAILED!', $e->getMessage());
+						die();
 					}
 					catch (\Orm\ValidationFailed $e)
 					{
@@ -366,16 +388,30 @@ class Forms extends \Controller
 	public function action_delete()
 	{
 		// try to locate the requested record
-		$this->model = $this->model->find($this->uri_param('edit'));
+		$this->model = $this->model->find($this->uri_param('delete'));
 
 		// did we find it?
 		if ($this->model)
 		{
+			if ($this->form_posted())
+			{
+				try
+				{
+					$this->observe('before_delete');
+
+					$this->model->delete();
+
+					\ExiteCMS\Core\Messages::set(\Lang::get('action.delete.success'), 'C');
+				}
+				catch (\ExiteCMS\Core\FormObserverFailed $e)
+				{
+					\ExiteCMS\Core\Messages::set(\Lang::get('action.delete.failed', $e->getMessage()), 'E');
+				}
+				\ExiteCMS\Core\Util::redirect($this->baseurl);
+			}
+
 			// set the widget title
 			$this->widget_data('title', \Lang::get('action.delete.title'));
-
-			// set the form info block
-			$this->view->set('info', \Lang::get('action.delete.info'), false);
 
 			// buttons to be placed under the table
 			$this->view->buttons = array(
@@ -396,12 +432,49 @@ class Forms extends \Controller
 		}
 	}
 
+	/**
+	 * Calls all observers for the current event
+	 *
+	 * @param  string
+	 */
+	protected function observe($event)
+	{
+		foreach ($this->observers as $observer => $settings)
+		{
+			$events = isset($settings['events']) ? $settings['events'] : array();
+			if (empty($events) or in_array($event, $events))
+			{
+				if (method_exists($this, $observer))
+				{
+					$this->{$observer}();
+				}
+				elseif (class_exists($observer))
+				{
+					Debug::dump('NOT SUPPORTED: Form observers static class call: '.$observer);
+					die();
+				}
+			}
+		}
+	}
+
 	// -----------------------------------------------------------------
 	// check for changes to the loaded model object
 	// -----------------------------------------------------------------
-	protected function is_changed()
+	protected function is_changed(array $fields = array())
 	{
-		return $this->model->is_changed();
+		$result = $this->model->is_changed();
+
+		if ( ! $result)
+		{
+			foreach($fields as $field)
+			{
+				if ($result = \Input::post($field))
+				{
+					break;
+				}
+			}
+		}
+		return $result;
 	}
 
 	// -----------------------------------------------------------------
@@ -450,6 +523,8 @@ class Forms extends \Controller
 	{
 		// reset the form
 		$_POST = array();
+
+		\ExiteCMS\Core\Messages::set(\Lang::get('global.form_refreshed'), 'I');
 	}
 
 	// -----------------------------------------------------------------

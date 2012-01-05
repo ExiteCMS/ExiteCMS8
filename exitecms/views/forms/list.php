@@ -1,10 +1,4 @@
 <?php
-/**
- * Default view file for the ExiteCMS\Core\Forms list widget
- */
-
-$theme->asset()->js('jquery.tipTip.minified.js', array(), 'footer');
-
 // display the widget info text
 if ( ! empty($info))
 {
@@ -40,11 +34,18 @@ if ( ! empty($data))
 		// new table row
 		echo "\t<tr>\n";
 
-		foreach($record as $field)
+		foreach($record as $name => $field)
 		{
 			// make sure the required entries exist
 			empty($field['options']) and $field['options'] = array();
 			empty($field['title']) and $field['title'] = '';
+
+			// a special style for the options column to keep the icons in check...
+			if ($name == 'options')
+			{
+				isset($field['options']['style']) or $field['options']['style'] = '';
+				$field['options']['style'] .= 'width: 0px;white-space:nowrap;';
+			}
 
 			// icon column?
 			if (isset($field['icon']))
@@ -68,7 +69,7 @@ if ( ! empty($data))
 					}
 					if ( ! isset($value['enabled']) or $value['enabled'])
 					{
-						$icon = $theme->asset()->img('icons/tbl_opt_'.$value['icon'].'.png', array('title' => $value['title'], 'alt' => $value['title']));
+						$icon = $theme->asset()->img('icons/tbl_opt_'.$value['icon'].'.png', array('title' => $value['title'], 'alt' => $value['title'], 'class' => 'tooltip'));
 						$values .= \Html::anchor(\Uri::create($value['url']), $icon)."\n";
 					}
 					else

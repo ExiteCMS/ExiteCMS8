@@ -10,7 +10,7 @@ return array(
 	'field' => array(
 		'name' => 'User name',
 		'fullname' => 'Full name',
-		'password' => 'New password',
+		'password1' => 'New password',
 		'password2' => 'Repeat password',
 		'email' => 'Email address',
 		'location' => 'Location',
@@ -28,7 +28,7 @@ return array(
 	'help' => array(
 		'name' => 'Choose a unique (nick)name. This is the name used to login.',
 		'fullname' => 'Optionally, you can specify a full name. This is visible to other users in the accounts public profile.',
-		'password' => 'Type a new password. Passwords have to be at least 6 characters long and must contain both letters and digits. Passwords are case-sensitive!',
+		'password1' => 'Type a new password. Passwords have to be at least 6 characters long and must contain both letters and digits. Passwords are case-sensitive!',
 		'password2' => 'Type the password again, to make sure you didn\'t make a mistake.',
 		'email' => 'Type a valid email address. This address is used to communicate with the user, and for validation purposes (if configured).',
 		'location' => 'Optionally, you can enter the users location. This is visible to other users in the accounts public profile.',
@@ -78,6 +78,7 @@ return array(
 						Note that if this users owns assets on this website, it will be logically deleted, to keep those assets.
 						If you delete a logically deleted user, it will be permanently removed, including all the assets belonging to this account!',
 			'success' => 'The user account has been deleted.',
+			'failure' => 'Error deleting the user account.',
 		),
 	),
 
@@ -95,8 +96,6 @@ return array(
 	// messages
 	'message' => array(
 		'deleted_noaccess' => 'You are not allowed to delete this user account.',
-		'port_invalid' => 'The "Port number" must be a numeric value between 1 and 65535.',
-		'invalid_hostname' => 'The hostname for this website can not be resolved on the internet.',
 	),
 
 	// validation strings

@@ -22,7 +22,10 @@
 
 	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<?php echo $theme->asset()->render('header'); ?>
+<?php
+	echo $theme->asset()->render('header');
+	$theme->asset()->js('jquery.tipTip.minified.js', array(), 'footer');
+?>
 </head>
 
 <body>

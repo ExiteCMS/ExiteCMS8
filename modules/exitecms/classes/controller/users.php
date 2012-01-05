@@ -39,9 +39,14 @@ class Controller_Users extends \ExiteCMS\Core\Forms
 		),
 	);
 
-	// -----------------------------------------------------------------
-	// controller constructor
-	// -----------------------------------------------------------------
+	/**
+	 * @var	array	Defined form observers
+	 */
+	protected $observers = array(
+		'hash_password' => array(
+			'events' => array('before_save'),
+		),
+	);
 
 	/*
 	 */
@@ -66,7 +71,7 @@ class Controller_Users extends \ExiteCMS\Core\Forms
 	 */
 	public function action_list()
 	{
-		// do the preparations for the list
+		// do the preparations for the list form
 		$result = parent::action_list();
 
 		// define the list headers structure
@@ -108,9 +113,6 @@ class Controller_Users extends \ExiteCMS\Core\Forms
 						'value' => strftime(\Config::get('exitecms.datetime.shortdate'), $record->joined)
 					),
 					'options' => array(
-						'options' => array(
-							'style' => 'width: 0px;white-space:nowrap;',
-						),
 						'values' => array(
 							array(
 								'icon' => 'edit',
@@ -134,4 +136,52 @@ class Controller_Users extends \ExiteCMS\Core\Forms
 			$this->view->set('data', $data);
 		}
 	}
+
+	public function action_add()
+	{
+		// do the preparations for the add form
+		parent::action_add();
+
+		// add our custom fields to the form
+		$this->view->set('custom_fields',
+			array(
+				array('name' => 'password1', 'label' => \Lang::get('field.password1'), 'attributes' => array('help_text' => \Lang::get('help.password1'), 'required' => true), 'rules' => array(), 'after' => 'name'),
+				array('name' => 'password2', 'label' => \Lang::get('field.password2'), 'attributes' => array('help_text' => \Lang::get('help.password2'), 'required' => true), 'rules' => array(), 'after' => 'password1'),
+			),
+			false
+		);
+	}
+
+	public function action_edit()
+	{
+		// do the preparations for the edit form
+		parent::action_edit();
+
+		// add our custom fields to the form
+		$this->view->set('custom_fields',
+			array(
+				array('name' => 'password1', 'label' => \Lang::get('field.password1'), 'attributes' => array('help_text' => \Lang::get('help.password1'), 'required' => true), 'rules' => array(), 'after' => 'name'),
+				array('name' => 'password2', 'label' => \Lang::get('field.password2'), 'attributes' => array('help_text' => \Lang::get('help.password2'), 'required' => true), 'rules' => array(), 'after' => 'password1'),
+			),
+			false
+		);
+	}
+
+	public function action_delete()
+	{
+		// do the preparations for the delete form
+		parent::action_delete();
+
+		// set the form info block
+		$this->view->set('info', \Lang::get('action.delete.info', array('name' => $this->model->name)), false);
+
+	}
+
+	/*
+	 * Observer (before_save): Hash password
+	 */
+	 protected function hash_password()
+	 {
+		 $this->model->password = md5(md5(\Input('password1')));
+	 }
 }

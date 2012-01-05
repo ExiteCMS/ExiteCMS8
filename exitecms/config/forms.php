@@ -26,7 +26,7 @@ return array(
 		'field_template'        => "\t\t<tr>\n\t\t\t<td class=\"{error_class} odd label\">{label}{required}</td>\n\t\t\t<td class=\"{error_class}\">{field} {help_text} {error_msg}</td>\n\t\t</tr>\n",
 		'multi_field_template'  => "\t\t<tr>\n\t\t\t<td class=\"{error_class} odd label\">{group_label}{required}</td>\n\t\t\t<td class=\"{error_class}\">{fields}\n\t\t\t\t{field} {label}\n{fields}{help_text}\t\t\t{error_msg}\n\t\t\t</td>\n\t\t</tr>\n",
 		'error_template'        => '<span>{error_msg}</span>',
-		'required_mark'         => '*',
+		'required_mark'         => '<span class="mark">*</span>',
 		'inline_errors'         => false,
 		'error_class'           => 'validation_error',
 		'help_text'             => Theme::instance()->asset()->img('form_help.png', array('title' => '{help_text}', 'class' => 'tooltip', 'style' => 'padding-left:5px;', 'alt' => '')),

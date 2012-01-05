@@ -50,6 +50,10 @@ table .highlight {
 	background-color: #b6001e;
 }
 
+table .mark {
+	color: #b6001e;
+}
+
 table .label {
 	width: 0px;
 	min-width: 150px;

@@ -16,10 +16,21 @@ $formdata['form_template'] = str_replace('{buttons}',
 );
 
 // create the fieldset
-$fieldset = Fieldset::forge('user')->set_config($formdata)->add_model($model)->populate($model, true);
+$fieldset = Fieldset::forge('users')->set_config($formdata)->set_config(array('form_attributes' => array('onsubmit' => 'fuel_set_csrf_token(this)')))->add_model($model)->populate($model, true);
 
-// add our custom fields
-$fieldset->add_after('password2', \Lang::get('field.password2'),array('help_text' => \Lang::get('help.password2')), array(), 'password');
+// add our custom fields to the fieldset
+if (isset($custom_fields))
+{
+	foreach ($custom_fields as $field)
+	{
+		isset($field['before']) and $fieldset->add_before($field['name'], $field['label'], $field['attributes'], $field['rules'], $field['before']);
+		isset($field['after']) and $fieldset->add_after($field['name'], $field['label'], $field['attributes'], $field['rules'], $field['after']);
+	}
+}
+
+// add the form_id and the CSRF token to the form
+isset($form_id) and	$fieldset->add('form_id', '', array('type' => 'hidden', 'value' => $form_id));
+$fieldset->add(\Config::get('security.csrf_token_key', 'fuel_csrf_token'), '', array('type' => 'hidden', 'value' => \Security::fetch_token()));
 
 // generate the form
 echo $fieldset->build();

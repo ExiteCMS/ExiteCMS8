@@ -174,7 +174,6 @@ class Model_User extends \Orm\Model
 		'privileges' => 'select,insert,update',
 		'form' => array (
 			'type' => 'radio',
-			'required' => true,
 		),
 	  ),
 	  'forum_datestamp' => array (
@@ -207,7 +206,6 @@ class Model_User extends \Orm\Model
 		'privileges' => 'select,insert,update',
 		'form' => array (
 			'type' => 'select',
-			'required' => true,
 		),
 	  ),
 	  'auth' => array (
@@ -239,7 +237,6 @@ class Model_User extends \Orm\Model
 		'privileges' => 'select,insert,update',
 		'form' => array (
 			'type' => 'select',
-			'required' => true,
 		),
 	  ),
 	  'country' => array (
@@ -257,7 +254,6 @@ class Model_User extends \Orm\Model
 		'privileges' => 'select,insert,update',
 		'form' => array (
 			'type' => 'select',
-			'required' => true,
 		),
 	  ),
 	  'avatar' => array (
